@@ -1,0 +1,12 @@
+#cloud-config
+users:
+  - default
+  - name: ansible
+    gecos: ansible
+    shell: /bin/bash
+    sudo: 'ALL=(ALL) NOPASSWD:ALL'
+    groups: user, admin
+    lock_passwd: true
+    create_home: true
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCvd+kIiJAssleG7zUXPmOyCsE1LIrwmwemvjaB1gqQEIo9j7i6By3/I1h/HCgRVbrJ40swr/ccdoyPwrTIW4/iI3HQH3itkv12itwEOHPF8Ya6HODXog/CiaSE7gNetQXS+EEb96PTbsbycfMhj+1NArdUfkn++MccZbG5S5d/JU9sj7sYrEJAmRq6tzi>
