@@ -9,4 +9,5 @@ users:
     lock_passwd: true
     create_home: true
     ssh_authorized_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCvd+kIiJAssleG7zUXPmOyCsE1LIrwmwemvjaB1gqQEIo9j7i6By3/I1h/HCgRVbrJ40swr/ccdoyPwrTIW4/iI3HQH3itkv12itwEOHPF8Ya6HODXog/CiaSE7gNetQXS+EEb96PTbsbycfMhj+1NArdUfkn++MccZbG5S5d/JU9sj7sYrEJAmRq6tzi>
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCvd+kIiJAssleG7zUXPmOyCsE1LIrwmwemvjaB1gqQEIo9j7i6By3/I1h/HCgRVbrJ40swr/ccdoyPwrTIW4/iI3HQH3itkv12itwEOHPF8Ya6HODXog/CiaSE7gNetQXS+EEb96PTbsbycfMhj+1NArdUfkn++MccZbG5S5d/JU9sj7sYrEJAmRq6tzim8s6pOqEf/WF3bKNQlRv7Wy6IQkHdUhLRm9m2KlBXd/MJR4gckz+iohiH/Z5ReUxT51xxk7xqSGA73+FxV7qzEbgSw1BNmNxHBh6y3espN7wm9frDalLVZF1i0KaIs7NJoHpxwFar5JeJsGqNTf+b+aHNNqCdW1IXnWIvQH7njKmDtIyhBgcv8+ku4P0QbkCVWrWd2giL1PwBwYHl7y8W4zB5d1/jhKN9lfmdc4zHJbt3eItcrup2F7WI79PGGPU7aPyucseSsL1w9GpXHja/fKgyARC+kIW1wsr3gaOSxWBYK+ees9kt3FCpqucfOY5mg90= student@fhm5vr6geqtfbqmo3r37
+
