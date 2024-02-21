@@ -1,0 +1,68 @@
+- name: Update apt packages
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install packages
+  apt:
+    pkg: "{{ backend_required_soft }}"
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Create user
+  user:
+    name: "{{ backend_service_user }}"
+    shell: /bin/bash
+    createhome: no
+  become: yes
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ backend_service_user }}"
+    group: "{{ backend_service_user }}"
+  loop:
+    - "{{ backend_lib_directory }}"
+    - "{{ backend_lib_directory }}/artifacts"
+    - "{{ backend_log_directory }}"
+  become: yes
+
+- name: Download artifact 
+  maven_artifact:
+    dest: "{{ backend_lib_directory }}/artifacts/{{ backend_project_name }}-{{ backend_artifact_version }}.jar"
+    repository_url: "{{ backend_nexus_repo }}/"
+    group_id: "{{ backend_group_id }}"
+    artifact_id: "{{ backend_project_name }}"
+    version: "{{ backend_artifact_version }}"
+    username: "{{ nexus_login }}"
+    password: "{{ nexus_password }}"
+    owner: "{{ backend_service_user }}"
+    group: "{{ backend_service_user }}"
+  become: yes
+
+- name: Create symbolic link for jar file
+  ansible.builtin.file:
+    src: "{{ backend_lib_directory }}/artifacts/{{ backend_project_name }}-{{ backend_artifact_version }}.jar"
+    dest: "{{ backend_lib_directory }}/{{ backend_project_name }}.jar"
+    state: link
+  become: yes
+
+
+- name: Unit service creation
+  template:
+    src: "{{ backend_j2 }}"
+    dest: "/etc/systemd/system/{{ backend_project_name }}-backend.service"
+  become: yes
+
+- name: Daemon reload
+  systemd:
+    daemon_reload: yes
+  become: yes
+
+- name: Run application
+  service:
+    name: "{{ backend_project_name }}-backend"
+    state: restarted
+  become: yes

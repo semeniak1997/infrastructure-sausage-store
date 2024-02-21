@@ -1,0 +1,13 @@
+backend_required_soft: ['openjdk-16-jdk', 'python3',  'python3-lxml', 'mc']
+backend_service_user: backend
+backend_nexus_repo: http://std-025-02.praktikum-services.tech:8081/repository/std-025-02-backend
+backend_group_id: com.yandex.practicum.devops
+backend_j2: sausage-store-backend.service.j2
+backend_report_directory: /var/sausage-store/logs/reports
+backend_log_directory: /var/sausage-store
+backend_output: /var/sausage-store/sausage-store.log
+backend_error: /var/sausage-store/sausage-store.log
+backend_lib_directory: /opt/sausage-store/bin 
+backend_artifact_version: 1.0.1063825
+backend_project_name: sausage-store
+java_path: /usr/lib/jvm/java-16-openjdk-amd64/bin
