@@ -1,0 +1,11 @@
+all:
+  children:
+    backend:
+      hosts:
+        10.128.0.147:
+    frontend:
+      hosts:
+        10.128.0.147:
+  vars:
+    ansible_connection: ssh
+    ansible_user: ansible

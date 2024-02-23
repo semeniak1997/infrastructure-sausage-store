@@ -1,0 +1,16 @@
+[Unit]
+Description={{ backend_project_name }}-backend
+
+[Service]
+User={{ backend_service_user }}
+Group={{ backend_service_user }}
+Environment=REPORT_PATH={{ backend_report_directory }}
+Environment=LOG_PATH={{ backend_log_directory }}
+StandardOutput=append:{{ backend_output }}
+StandardError=append:{{ backend_error }}
+Restart=always
+ExecStart={{ java_path }}/java -jar {{ backend_lib_directory }}/{{ backend_project_name }}.jar
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

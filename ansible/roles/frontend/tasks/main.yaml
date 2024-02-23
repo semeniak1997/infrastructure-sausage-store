@@ -1,0 +1,106 @@
+- name: Collect selected facts
+  ansible.builtin.setup:
+    filter:
+      - 'ansible_distribution_release'
+
+- name: Add gpg-key for nodejs repo
+  ansible.builtin.apt_key:
+    url: "{{ nodejs_key_url }}"
+    keyring: /usr/share/keyrings/nodesource.gpg
+    state: present
+  become: yes
+
+- name: Add nodejs repo
+  ansible.builtin.apt_repository:
+    filename: deb_nodesource
+    repo: "deb [signed-by=/usr/share/keyrings/nodesource.gpg] {{ nodejs_deb_repo }} {{ ansible_distribution_release }} main"
+    update_cache: yes
+    state: present
+  become: yes
+
+- name: Install Nodejs
+  ansible.builtin.apt:
+    name:
+      - nodejs
+    update_cache: yes
+    state: present
+  become: yes
+
+- name: Create user
+  user:
+    name: "{{ frontend_user }}"
+    shell: /bin/bash
+    createhome: no
+  become: yes
+
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ frontend_user }}"
+    group: "{{ frontend_user }}"
+    mode: '0755'
+  loop:
+    - "{{ frontend_root_path }}"
+    - "{{ frontend_root_path }}/{{ frontend_artifacts_dir }}"
+    - "{{ frontend_root_path }}/{{ frontend_dist_dir }}"
+  become: yes
+
+- name: Download artifacts
+  no_log: true
+  get_url:
+    url: "{{ frontend_nexus_repo }}/{{ frontend_artifact_version }}/{{ site_name }}-{{ frontend_artifact_version }}.tar.gz"
+    dest: "{{ frontend_root_path }}/{{ frontend_artifacts_dir }}/{{ site_name }}-{{ frontend_artifact_version }}.tar.gz"
+    username: "{{ nexus_login }}"
+    password: "{{ nexus_password }}"
+    owner: "{{ frontend_user }}"
+    group: "{{ frontend_user }}"
+  become: yes
+
+- name: Extract artifacts archive
+  unarchive:
+    src: "{{ frontend_root_path }}/{{ frontend_artifacts_dir }}/{{ site_name }}-{{ frontend_artifact_version }}.tar.gz"
+    dest: "{{ frontend_root_path }}/{{ frontend_dist_dir }}"
+    remote_src: yes
+    owner: "{{ frontend_user }}"
+    group: "{{ frontend_user }}"
+  become: yes
+
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+  become: yes
+  
+- name: Copy Nginx site configuration
+  template:
+    src: "{{ frontend_j2 }}"
+    dest: "/etc/nginx/sites-available/{{ site_name }}.cfg"
+  become: yes
+
+- name: Enable Nginx site
+  ansible.builtin.file:
+   src: "/etc/nginx/sites-available/{{ site_name }}.cfg"
+   dest: "/etc/nginx/sites-enabled/{{ site_name }}.cfg"
+   state: link
+  become: yes 
+
+- name: Remove default Nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  become: yes
+
+- name: Enable Nginx service
+  systemd:
+    name: nginx
+    enabled: yes
+  become: yes
+
+- name: Reload Nginx service
+  systemd:
+    name: nginx
+    state: reloaded
+  become: yes

@@ -1,0 +1,10 @@
+site_name: sausage-store
+nodejs_key_url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+nodejs_deb_repo: https://deb.nodesource.com/node_20.x
+frontend_nexus_repo: http://std-025-02.praktikum-services.tech:8081/repository/std-025-02-frontend
+frontend_user: www-data
+frontend_root_path: /opt/sausage-store/static
+frontend_dist_dir: dist
+frontend_artifacts_dir: artifacts
+frontend_artifact_version: 1.0.1063824
+frontend_j2: sausage-store-frontend.j2
