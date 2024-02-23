@@ -1,7 +1,7 @@
 
-# Terraform Infrastructure Deployment
+# Ansible sausage-store services deployment
 
-This repository contains Terraform configuration files for deploying infrastructure on Yandex.Cloud. The setup includes the creation of virtual machine instances and a Virtual Private Cloud (VPC) network.
+This project consists of two roles: `backend` and `frontend`, each with its own set of tasks outlined in the respective main.yaml files.
 
 ## Summary
 
